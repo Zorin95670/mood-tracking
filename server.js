@@ -94,3 +94,45 @@ app.get("/api/status", (req, res) => {
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
+
+app.get("/api/history", (req, res) => {
+  const result = [];
+
+  for (const hourKey of Object.keys(votes)) {
+    const data = votes[hourKey];
+
+    const counters = { 1: 0, 2: 0, 3: 0, 4: 0 };
+
+    let total = 0;
+    let count = 0;
+
+    for (const ip in data) {
+      const v = data[ip];
+      if (![1,2,3,4].includes(v)) continue;
+
+      counters[v]++;
+      total += v;
+      count++;
+    }
+
+    let finalMood = null;
+    if (count > 0) {
+      const avg = total / count;
+
+      if (avg >= 3.5) finalMood = 4;
+      else if (avg >= 2.5) finalMood = 3;
+      else if (avg >= 1.5) finalMood = 2;
+      else finalMood = 1;
+    }
+
+    result.push({
+      hour: hourKey,
+      ...counters,
+      finalMood
+    });
+  }
+
+  result.sort((a, b) => a.hour.localeCompare(b.hour));
+
+  res.json(result);
+});

@@ -5,6 +5,7 @@
   <title>Mood Tracking</title>
 
   <link rel="stylesheet" href="/style.css" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 
 <body>
@@ -49,6 +50,11 @@
       <button data-mood="yellow" class="btn yellow" aria-label="Blagues OK"></button>
       <button data-mood="orange" class="btn orange" aria-label="Prudence"></button>
       <button data-mood="red" class="btn red" aria-label="À éviter"></button>
+    </div>
+
+    <div class="vote-hint" style="margin-top: 40px;">Historique des humeurs</div>
+    <div style="margin-top: 20px;">
+      <canvas id="moodChart"></canvas>
     </div>
 
   </main>

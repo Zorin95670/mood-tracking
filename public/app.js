@@ -7,6 +7,7 @@ const MOODS = {
 };
 
 let intervalId = null;
+let chartInstance = null;
 
 function renderMood(data) {
   const moodKey = data.mood ?? 0;
@@ -61,12 +62,94 @@ function bindUI() {
 function start() {
   bindUI();
   refresh();
+  loadHistoryChart();
 
-  intervalId = setInterval(refresh, 60000);
+  intervalId = setInterval(() => {
+    refresh();
+    loadHistoryChart();
+  }, 60000);
 }
 
 window.addEventListener("beforeunload", () => {
   if (intervalId) clearInterval(intervalId);
 });
+
+async function loadHistoryChart() {
+  try {
+    const res = await fetch("/api/history");
+    const history = await res.json();
+
+    const labels = history.map(h =>
+      h.hour.split("-").slice(3,5).join("h") + "h"
+    );
+
+    const data1 = history.map(h => h[1]);
+    const data2 = history.map(h => h[2]);
+    const data3 = history.map(h => h[3]);
+    const data4 = history.map(h => h[4]);
+
+    renderChart(labels, data1, data2, data3, data4);
+
+  } catch (err) {
+    console.error("chart error:", err);
+  }
+}
+
+function renderChart(labels, d1, d2, d3, d4) {
+  const ctx = document.getElementById("moodChart").getContext("2d");
+
+  if (chartInstance) {
+    chartInstance.destroy();
+  }
+
+  chartInstance = new Chart(ctx, {
+    type: "bar",
+    data: {
+      labels,
+      datasets: [
+        {
+          label: "🟢",
+          data: d1,
+          backgroundColor: "#2ecc71"
+        },
+        {
+          label: "🟡",
+          data: d2,
+          backgroundColor: "#f1c40f"
+        },
+        {
+          label: "🟠",
+          data: d3,
+          backgroundColor: "#e67e22"
+        },
+        {
+          label: "🔴",
+          data: d4,
+          backgroundColor: "#e74c3c"
+        }
+      ]
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        legend: {
+          labels: {
+            color: "white"
+          }
+        }
+      },
+      scales: {
+        x: {
+          stacked: true,
+          ticks: { color: "white" }
+        },
+        y: {
+          stacked: true,
+          ticks: { color: "white" }
+        }
+      }
+    }
+  });
+}
 
 start();
