@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <title>Mood Tracking</title>
+
+  <link rel="stylesheet" href="/style.css" />
+</head>
+
+<body>
+
+<div class="app">
+
+  <!-- HEADER -->
+  <header class="header">
+    <h1>Mood Tracking</h1>
+    <p class="subtitle">
+      Statut émotionnel en temps réel du responsable
+    </p>
+  </header>
+
+  <!-- CARD -->
+  <main class="card">
+
+    <img
+      class="avatar"
+      src="https://i.pravatar.cc/300"
+      alt="profil"
+    />
+
+    <div class="mood-circle" id="mood">⚫</div>
+
+    <h2 id="label">On sait pas</h2>
+
+    <!-- LEGEND -->
+    <div class="legend">
+      <div><span>🟢</span> Bonne humeur</div>
+      <div><span>🟡</span> Blagues OK, pas plus</div>
+      <div><span>🟠</span> Prudence requise</div>
+      <div><span>🔴</span> À éviter</div>
+      <div><span>⚫</span> Inconnu</div>
+    </div>
+
+    <!-- ACTIONS -->
+    <div class="vote-hint">Vote pour le mood actuel :</div>
+
+    <div class="buttons" aria-label="Vote du mood actuel">
+      <button data-mood="green" class="btn green" aria-label="Bonne humeur"></button>
+      <button data-mood="yellow" class="btn yellow" aria-label="Blagues OK"></button>
+      <button data-mood="orange" class="btn orange" aria-label="Prudence"></button>
+      <button data-mood="red" class="btn red" aria-label="À éviter"></button>
+    </div>
+
+  </main>
+
+</div>
+
+<script src="/app.js"></script>
+
+</body>
+</html>
