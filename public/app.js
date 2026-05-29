@@ -17,6 +17,9 @@ function renderMood(data) {
 
   document.getElementById("mood").textContent = mood.emoji;
   document.getElementById("label").textContent = mood.label;
+
+  const img = document.getElementById("moodImage");
+  img.src = getMoodImage(moodKey);
 }
 
 async function refresh() {
@@ -150,6 +153,16 @@ function renderChart(labels, d1, d2, d3, d4) {
       }
     }
   });
+}
+
+function getMoodImage(mood) {
+  switch (mood) {
+    case 1: return "/images/1.png";
+    case 2: return "/images/2.png";
+    case 3: return "/images/3.png";
+    case 4: return "/images/4.png";
+    default: return "/images/unknown.png";
+  }
 }
 
 start();
